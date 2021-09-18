@@ -2,6 +2,9 @@ import React from "react";
 import { useFormik } from "formik";
 import { Link } from "react-router-dom";
 import * as yup from "yup";
+import { login } from "../Style/login";
+import { Authlogin } from "../Store/actions/authActions";
+import { connect } from "react-redux";
 import {
   makeStyles,
   Container,
@@ -11,40 +14,7 @@ import {
   Typography,
 } from "@material-ui/core";
 
-const useStyles = makeStyles(() => ({
-  root: {
-    display: "flex",
-  },
-  box: {
-    width: "500px",
-    marginTop: "123px",
-    height: "435px",
-    background: "#FFFFFF 0% 0% no-repeat padding-box",
-    boxShadow: "0px 30px 36px #557DA526",
-    borderRadius: "20px",
-    opacity: 1,
-  },
-  form: {
-    margin: "26px",
-    marginTop: "30px",
-  },
-  list: {
-    display: "flex",
-    justifyContent: "space-between",
-    marginTop: "30px",
-  },
-  typo:{
-    marginTop:"27px"
-  }
-  ,link:{
-    textDecoration: "none",
-    color:"#43AFFF",
-  },
-  footer:{
-    marginTop: "20px",
-  },
-  
-}));
+const useStyles = makeStyles(() => login);
 
 const validationSchema = yup.object({
   email: yup
@@ -54,7 +24,7 @@ const validationSchema = yup.object({
   password: yup.string().required("Incorrect email address or password."),
 });
 
-export default function Login() {
+function Login(props) {
   const classes = useStyles();
   const formik = useFormik({
     initialValues: {
@@ -63,7 +33,7 @@ export default function Login() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log(values);
+      props.Authlogin(values);
     },
   });
   return (
@@ -97,7 +67,10 @@ export default function Login() {
               variant="outlined"
               value={formik.values.email}
               onChange={formik.handleChange}
-              error={formik.touched.email && Boolean(formik.errors.email)}
+              error={
+                props.error.status === 401 ||
+                (formik.touched.email && Boolean(formik.errors.email))
+              }
             />
             <div className={classes.list}>
               <FormLabel
@@ -119,23 +92,30 @@ export default function Login() {
               variant="outlined"
               value={formik.values.password}
               onChange={formik.handleChange}
-              error={formik.touched.password && Boolean(formik.errors.password)}
-              helperText={formik.touched.password && formik.errors.password}
+              error={
+                props.error.status === 401 ||
+                (formik.touched.password && Boolean(formik.errors.password))
+              }
+              helperText={
+                props.error.status === 401
+                  ? "Incorrect email address or password."
+                  : formik.touched.password && formik.errors.password
+              }
             />
             <Typography className={classes.typo} align="center">
               <Button
                 className="btn"
-                style={{ color: "white",background:"#43AFFF"}}
+                style={{ color: "white", background: "#43AFFF" }}
                 variant="contained"
                 type="submit"
               >
                 Submit
               </Button>
               <div className={classes.footer}>
-              New to MyJobs? 
-              <Link className={classes.link} to="/signup">
-                 Create an account
-              </Link>
+                New to MyJobs?
+                <Link className={classes.link} to="/signup">
+                  Create an account
+                </Link>
               </div>
             </Typography>
           </form>
@@ -144,3 +124,8 @@ export default function Login() {
     </Container>
   );
 }
+
+const mapStateToProps = (state, ownProps) => {
+  return { error: state.error, errorMsg: state.error.msg };
+};
+export default connect(mapStateToProps, { Authlogin })(Login);
