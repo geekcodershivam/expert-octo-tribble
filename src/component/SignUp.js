@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import * as yup from "yup";
 import LockOutlined from "@material-ui/icons/LockOutlined";
 import { signup } from "../Style/signup";
-import { connect } from 'react-redux'
-import {Register} from '../Store/actions/authActions'
+import { connect } from "react-redux";
+import { Register } from "../Store/actions/authActions";
 import {
   makeStyles,
   Container,
@@ -41,7 +41,7 @@ function SignUp(props) {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-     props.Register(values);
+      props.Register(values);
     },
   });
   return (
@@ -216,4 +216,4 @@ function SignUp(props) {
   );
 }
 
-export default connect(null,{Register})(SignUp);
+export default connect(null, { Register })(SignUp);

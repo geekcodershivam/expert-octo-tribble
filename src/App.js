@@ -8,16 +8,18 @@ import { BrowserRouter, Router, Route } from "react-router-dom";
 import history from "./Store/history";
 function App() {
   return (
-    <BrowserRouter >
-      <Router history={history}>
-        <Route exact path="/" component={LandingPage} /> 
-       
-        <Layout>  
-          <Route exact path="/home" component={Home} />
+    <BrowserRouter > 
+     
+      <Router history={history}> 
+     
+        <Layout>   
+          <Route exact path="/" component={LandingPage} />
+          <Route path="/home" component={Home} />
           <Route path="/login" component={Login}/>
           <Route path="/signup" component={SignUp} />
           <Route path="/forgetpassword" component={Layout} />
         </Layout>
+       
       </Router>
     </BrowserRouter>
   );
