@@ -3,7 +3,9 @@ import { useFormik } from "formik";
 import { Link } from "react-router-dom";
 import * as yup from "yup";
 import LockOutlined from "@material-ui/icons/LockOutlined";
-
+import { signup } from "../Style/signup";
+import { connect } from 'react-redux'
+import {Register} from '../Store/actions/authActions'
 import {
   makeStyles,
   Container,
@@ -12,42 +14,9 @@ import {
   FormLabel,
   Typography,
 } from "@material-ui/core";
-const useStyles = makeStyles(() => ({
-  root: {
-    display: "flex",
-  },
-  box: {
-    width: "500px",
-    marginTop: "123px",
-    height: "731px",
-    background: "#FFFFFF 0% 0% no-repeat padding-box",
-    boxShadow: "0px 30px 36px #557DA526",
-    borderRadius: "20px",
-    opacity: 1,
-  },
-  list: {
-    display: "flex",
-    justifyContent: "space-between",
-    marginTop: "18px",
-  },
-  form: {
-    margin: "24px",
-    marginTop: "20px",
-  },
-  typo: {
-    marginTop: "13px",
-  },
-  link: {
-    textDecoration: "none",
-    color: "#43AFFF",
-  },
-  pass: {
-    paddingRight: "20px",
-  },
-  footer:{
-    marginTop: "20px",
-  },
-}));
+
+const useStyles = makeStyles(() => signup);
+
 const validationSchema = yup.object({
   email: yup
     .string("Enter your email")
@@ -57,7 +26,8 @@ const validationSchema = yup.object({
   name: yup.string().required("The field is mandatory."),
   confirmPassword: yup.string().required("The field is mandatory."),
 });
-export default function SignUp() {
+
+function SignUp(props) {
   const classes = useStyles();
   const [role, setRole] = useState(0);
   const formik = useFormik({
@@ -71,7 +41,7 @@ export default function SignUp() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log(values);
+     props.Register(values);
     },
   });
   return (
@@ -102,9 +72,7 @@ export default function SignUp() {
                 onClick={(e) => {
                   setRole(1);
                 }}
-                style={
-                  role===1?{background:"#43AFFF"}:null
-                }
+                style={role === 1 ? { background: "#43AFFF" } : null}
                 startIcon={<LockOutlined />}
               >
                 Recruiter
@@ -114,7 +82,11 @@ export default function SignUp() {
                 onClick={(e) => {
                   setRole(0);
                 }}
-                style={role===0?{marginLeft: "21px",background:"#43AFFF"}:{ marginLeft: "21px" }}
+                style={
+                  role === 0
+                    ? { marginLeft: "21px", background: "#43AFFF" }
+                    : { marginLeft: "21px" }
+                }
                 startIcon={<LockOutlined />}
               >
                 Candidate
@@ -192,9 +164,13 @@ export default function SignUp() {
                   value={formik.values.confirmPassword}
                   onChange={formik.handleChange}
                   error={
-                    formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)
+                    formik.touched.confirmPassword &&
+                    Boolean(formik.errors.confirmPassword)
                   }
-                  helperText={formik.touched.confirmPassword&& formik.errors.confirmPassword}
+                  helperText={
+                    formik.touched.confirmPassword &&
+                    formik.errors.confirmPassword
+                  }
                 />
               </div>
             </div>
@@ -239,3 +215,5 @@ export default function SignUp() {
     </Container>
   );
 }
+
+export default connect(null,{Register})(SignUp);

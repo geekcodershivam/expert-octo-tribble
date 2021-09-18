@@ -2,6 +2,8 @@
 import {
     LOGIN_SUCCESS,
     LOGIN_FAIL,
+    REGISTER_SUCCESS,
+    REGISTER_FAIL,
   } from '../types';
   
   const init = {
@@ -14,6 +16,7 @@ import {
   export default function (state = init, action) {
     switch (action.type) {
       case LOGIN_SUCCESS:
+      case REGISTER_SUCCESS:
       localStorage.setItem('token', action.payload.token);
         return {
           ...state,
@@ -23,6 +26,7 @@ import {
         };
         
       case LOGIN_FAIL:
+      case REGISTER_FAIL:
         localStorage.removeItem('token');
         return {
           ...state,
