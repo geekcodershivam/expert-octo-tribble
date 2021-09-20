@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState} from "react";
 import { useFormik } from "formik";
 import { Link } from "react-router-dom";
 import * as yup from "yup";
 import LockOutlined from "@material-ui/icons/LockOutlined";
-import { signup } from "../Style/signup";
+import { signup } from "../../Styles/signup";
 import { connect } from "react-redux";
-import { Register } from "../Store/actions/authActions";
+import { Register } from "../../Store/actions/authActions";
 import {
   makeStyles,
   Container,
@@ -105,9 +105,10 @@ function SignUp(props) {
               type="text"
               variant="outlined"
               value={formik.values.name}
+              placeholder="Enter your full name"
               onChange={formik.handleChange}
-              error={formik.touched.name && Boolean(formik.errors.name)}
-              helperText={formik.touched.name && formik.errors.name}
+              error={ props.error.status === 401 ||(formik.touched.name && Boolean(formik.errors.name))}
+              helperText={ props.error.status === 401?props.errorMsg:formik.touched.name && formik.errors.name}
             />
             <FormLabel
               style={{ fontSize: "14px", color: "black" }}
@@ -123,9 +124,10 @@ function SignUp(props) {
               type="email"
               variant="outlined"
               value={formik.values.email}
+              placeholder="Enter your email address"
               onChange={formik.handleChange}
-              error={formik.touched.email && Boolean(formik.errors.email)}
-              helperText={formik.touched.email && formik.errors.email}
+              error={ props.error.status === 401 ||(formik.touched.email && Boolean(formik.errors.email))}
+              helperText={ props.error.status === 401?props.errorMsg:formik.touched.email && formik.errors.email}
             />
             <div className={classes.list}>
               <div className={classes.pass}>
@@ -141,11 +143,13 @@ function SignUp(props) {
                   type="password"
                   variant="outlined"
                   value={formik.values.password}
+                  placeholder="Enter your password"
                   onChange={formik.handleChange}
                   error={
-                    formik.touched.password && Boolean(formik.errors.password)
+                    props.error.status === 401 ||
+                    (formik.touched.password && Boolean(formik.errors.password))
                   }
-                  helperText={formik.touched.password && formik.errors.password}
+                  helperText={ props.error.status === 401 ?props.errorMsg:formik.touched.password && formik.errors.password}
                 />
               </div>
 
@@ -161,14 +165,15 @@ function SignUp(props) {
                   name="confirmPassword"
                   type="password"
                   variant="outlined"
+                  placeholder="Enter your password"
                   value={formik.values.confirmPassword}
                   onChange={formik.handleChange}
                   error={
-                    formik.touched.confirmPassword &&
-                    Boolean(formik.errors.confirmPassword)
+                    props.error.status === 401 || (formik.touched.confirmPassword &&
+                    Boolean(formik.errors.confirmPassword))
                   }
                   helperText={
-                    formik.touched.confirmPassword &&
+                    props.error.status === 401 ?props.errorMsg:formik.touched.confirmPassword &&
                     formik.errors.confirmPassword
                   }
                 />
@@ -186,11 +191,12 @@ function SignUp(props) {
               fullWidth
               name="skills"
               type="text"
+              placeholder="Enter comma separated skills"
               variant="outlined"
               value={formik.values.skills}
               onChange={formik.handleChange}
-              error={formik.touched.skills && Boolean(formik.errors.skills)}
-              helperText={formik.touched.skills && formik.errors.skills}
+              error={ props.error.status === 401 || (formik.touched.skills && Boolean(formik.errors.skills))}
+              helperText={ props.error.status === 401?props.errorMsg:formik.touched.skills && formik.errors.skills}
             />
 
             <Typography className={classes.typo} align="center">
@@ -215,5 +221,7 @@ function SignUp(props) {
     </Container>
   );
 }
-
-export default connect(null, { Register })(SignUp);
+const mapStateToProps = (state, ownProps) => {
+  return { error: state.error, errorMsg: state.error.msg };
+};
+export default connect(mapStateToProps, { Register })(SignUp);

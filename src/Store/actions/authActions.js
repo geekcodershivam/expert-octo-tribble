@@ -3,6 +3,7 @@ import {
   LOGIN_FAIL,
   REGISTER_SUCCESS,
   REGISTER_FAIL,
+  LOGOUT_SUCCESS
 } from "../types";
 import history from "../history";
 import axios from "axios";
@@ -48,4 +49,10 @@ export const Register = (data) => (dispatch) => {
         type: REGISTER_FAIL,
       });
     });
+};
+
+export const logout = () => {
+  return {
+    type: LOGOUT_SUCCESS
+  };
 };

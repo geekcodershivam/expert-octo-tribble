@@ -2,9 +2,10 @@ import React from "react";
 import { useFormik } from "formik";
 import { Link } from "react-router-dom";
 import * as yup from "yup";
-import { login } from "../Style/login";
-import { Authlogin } from "../Store/actions/authActions";
+import { login } from "../../Styles/login";
+import { Authlogin } from "../../Store/actions/authActions";
 import { connect } from "react-redux";
+
 import {
   makeStyles,
   Container,
@@ -25,6 +26,7 @@ const validationSchema = yup.object({
 });
 
 function Login(props) {
+
   const classes = useStyles();
   const formik = useFormik({
     initialValues: {
@@ -66,6 +68,7 @@ function Login(props) {
               type="email"
               variant="outlined"
               value={formik.values.email}
+              placeholder="Enter your email"
               onChange={formik.handleChange}
               error={
                 props.error.status === 401 ||
@@ -80,7 +83,7 @@ function Login(props) {
                 Password
               </FormLabel>
 
-              <Link className={classes.link} to="">
+              <Link className={classes.link} to="/forgetpassword">
                 Forgot your password?
               </Link>
             </div>
@@ -91,6 +94,7 @@ function Login(props) {
               type="password"
               variant="outlined"
               value={formik.values.password}
+              placeholder="Enter your password"
               onChange={formik.handleChange}
               error={
                 props.error.status === 401 ||
