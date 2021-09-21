@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { makeStyles, Container, Button, Box } from "@material-ui/core";
+import { makeStyles, Container, Button, Box, } from "@material-ui/core";
 import { Pagination } from "@material-ui/lab";
 import Joblist from "../components/HomePage/Joblist";
 import { useHistory } from "react-router-dom";
@@ -28,6 +28,7 @@ export default function Home() {
   const classes = useStyles();
   const history = useHistory();
   const [page, setPage] = useState(1);
+  const [search,setSearch]=useState("");
   const [count, setCout] = useState({});
   const [jobPost, setjobPost] = useState([]);
   const selectedData = useSelector((state) => state.auth.token);
@@ -41,10 +42,10 @@ export default function Home() {
     if (!isuser) {
       history.push("/");
     }
-  }, [isuser]);
+  }, [isuser]); 
 
-  useEffect(() => {
-    let url = `/recruiters/jobs/?page=${page}`;
+  function callApi(){
+    let url = `https://jobs-api.squareboat.info/api/v1/recruiters/jobs/?page=${page}`;
     fetch(url, {
       method: "GET",
       headers: {
@@ -64,10 +65,29 @@ export default function Home() {
           setjobPost(data.data.data);
         }
       });
+  }
+
+  useEffect(() => {
+    callApi();
   }, []);
+
+  useEffect(() => {
+    if(!search){
+      callApi();
+    }
+    const results = jobPost.filter((ele)=>
+      ele.title.toLowerCase().includes(search)
+    )
+    setjobPost(results)
+  }, [search])
+ 
+
   const renderJobList = (e, pageName) => {
           setPage(pageName);
   };
+  const handleSearch=(e)=>{
+    setSearch(e.target.value);
+  }
 
   const renderlist = (
     <div className={classes.box}>
@@ -156,6 +176,7 @@ export default function Home() {
         }
       >
         Jobs posted by you
+      <input value={search} onChange={(e)=>handleSearch(e)}/>
       </h5>
       {items}
     </Container>

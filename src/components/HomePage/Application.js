@@ -12,7 +12,7 @@ export default function Application(props) {
   useEffect(() => {
     axios({
       method: "get",
-      url: `/recruiters/jobs/${props.id}/candidates`,
+      url: `https://jobs-api.squareboat.info/api/v1/recruiters/jobs/${props.id}/candidates`,
       headers: {
         Authorization: localStorage.getItem("token"),
         "Content-Type": "application/json",

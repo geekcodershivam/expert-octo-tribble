@@ -11,7 +11,7 @@ import { returnErrors } from "./errorActions";
 
 export const Authlogin = (data) => (dispatch) => {
   axios
-    .post("/auth/login", data)
+    .post("https://jobs-api.squareboat.info/api/v1/auth/login", data)
     .then((res) => {
       dispatch({
         type: LOGIN_SUCCESS,
@@ -31,9 +31,8 @@ export const Authlogin = (data) => (dispatch) => {
 };
 
 export const Register = (data) => (dispatch) => {
-  console.log(data);
   axios
-    .post("/auth/register", data)
+    .post("https://jobs-api.squareboat.info/api/v1/auth/register", data)
     .then((res) => {
       dispatch({
         type: REGISTER_SUCCESS,

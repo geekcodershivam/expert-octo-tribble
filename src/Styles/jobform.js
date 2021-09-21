@@ -11,6 +11,7 @@ export const jobStyle={
       borderRadius: "20px",
       opacity: 1,
     },
+
     list: {
       display: "flex",
       justifyContent: "space-between",

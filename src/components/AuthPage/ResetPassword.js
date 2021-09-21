@@ -27,7 +27,7 @@ const [error,setError]=useState(false);
   useEffect(() => {
     axios({
       method: 'get',
-      url: `auth/resetpassword/${localStorage.getItem('reset')}`,
+      url: `https://jobs-api.squareboat.info/api/v1/auth/resetpassword/${localStorage.getItem('reset')}`,
       headers: {
         "Content-Type": "application/json",
       },
@@ -54,7 +54,7 @@ const [error,setError]=useState(false);
       console.log(values);
       axios({
         method: 'post',
-        url: "/auth/resetpassword",
+        url: "https://jobs-api.squareboat.info/api/v1/auth/resetpassword",
         data: JSON.stringify({
           ...values,
           token:localStorage.getItem("reset"),

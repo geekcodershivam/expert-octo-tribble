@@ -43,7 +43,8 @@ function JobForm(props) {
     onSubmit: (values) => {
       axios({
         method: "post",
-        url: "/jobs",
+        url: "https://jobs-api.squareboat.info/api/v1/jobs",
+       
         data: JSON.stringify({
           ...values,
         }),

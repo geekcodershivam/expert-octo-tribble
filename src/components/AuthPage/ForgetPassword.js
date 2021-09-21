@@ -34,7 +34,7 @@ export default function Forgetpassword() {
     onSubmit: (values) => {
       axios({
         method: 'get',
-        url: `/auth/resetpassword?email=${values.email}`,
+        url: `https://jobs-api.squareboat.info/api/v1/auth/resetpassword?email=${values.email}`,
         headers: {
           "Content-Type": "application/json",
         },
